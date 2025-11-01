@@ -1,12 +1,13 @@
-// Firebase configuration (replace with your own Firebase project config)
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDLch0pSaHR9xFQv_Uy8omfyZkg84fshIQ",
   authDomain: "esp32-project-f6e02.firebaseapp.com",
-  databaseURL: "https://esp32-project-f6e02-default-rtdb.firebaseio.com/",
+  databaseURL: "https://esp32-project-f6e02-default-rtdb.firebaseio.com",
   projectId: "esp32-project-f6e02",
-  storageBucket: "esp32-project-f6e02.appspot.com",
-  messagingSenderId: "879733802104",
-  appId: "1:879733802104:web:9d37c6602e663c81c4547c"
+  storageBucket: "esp32-project-f6e02.firebasestorage.app",
+  messagingSenderId: "925177881979",
+  appId: "1:925177881979:web:e9a555ec9d9af2cc1089de",
+  measurementId: "G-X12SYTY0DD"
 };
 
 // Initialize Firebase
