@@ -1,4 +1,4 @@
-// Your Firebase configuration
+// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDLch0pSaHR9xFQv_Uy8omfyZkg84fshIQ",
   authDomain: "esp32-project-f6e02.firebaseapp.com",
@@ -19,7 +19,7 @@ const touchRef = db.ref("/test/touchValue");
 const intRef = db.ref("/test/int");
 const floatRef = db.ref("/test/float");
 
-// Update HTML on data change
+// Update HTML when values change
 touchRef.on("value", (snapshot) => {
   document.getElementById("touchValue").textContent = snapshot.val() ?? "--";
 });
@@ -29,5 +29,6 @@ intRef.on("value", (snapshot) => {
 });
 
 floatRef.on("value", (snapshot) => {
-  document.getElementById("floatValue").textContent = snapshot.val() ?? "--";
+  const val = snapshot.val();
+  document.getElementById("floatValue").textContent = val !== null ? val.toFixed(2) : "--";
 });
