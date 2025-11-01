@@ -1,4 +1,8 @@
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Import Firebase modules (v10.7.1)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+// ✅ Your actual Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDLch0pSaHR9xFQv_Uy8omfyZkg84fshIQ",
   authDomain: "esp32-project-f6e02.firebaseapp.com",
@@ -11,22 +15,26 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-// Listen for updates
-const touchRef = db.ref("/test/touchValue");
-const intRef = db.ref("/test/int");
-const floatRef = db.ref("/test/float");
+// Database references
+const touchRef = ref(db, "/test/touchValue");
+const intRef = ref(db, "/test/int");
+const floatRef = ref(db, "/test/float");
 
-touchRef.on("value", (snapshot) => {
-  document.getElementById("touchValue").textContent = snapshot.val();
+// Update webpage when values change
+onValue(touchRef, (snapshot) => {
+  const value = snapshot.val();
+  document.getElementById("touchValue").textContent = value ?? "--";
 });
 
-intRef.on("value", (snapshot) => {
-  document.getElementById("intValue").textContent = snapshot.val();
+onValue(intRef, (snapshot) => {
+  const value = snapshot.val();
+  document.getElementById("intValue").textContent = value ?? "--";
 });
 
-floatRef.on("value", (snapshot) => {
-  document.getElementById("floatValue").textContent = snapshot.val().toFixed(2);
+onValue(floatRef, (snapshot) => {
+  const value = snapshot.val();
+  document.getElementById("floatValue").textContent = value ?? "--";
 });
