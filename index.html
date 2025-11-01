@@ -1,75 +1,31 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Realtime Sensor Viewer</title>
-  <style>
-    body{font-family:system-ui,Arial;padding:20px}
-    table{border-collapse:collapse;width:100%}
-    td,th{border:1px solid #ddd;padding:8px}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32 Firebase Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Live sensor readings (Realtime DB)</h1>
-  <div>
-    Device ID: <input id="TouchValue" value="device123" />
-    <button id="start">Start</button>
+  <h1>ESP32 Web Dashboard</h1>
+  <div class="data-container">
+    <div class="card">
+      <h3>Touch Sensor</h3>
+      <p id="touchValue">--</p>
+    </div>
+    <div class="card">
+      <h3>Integer Value</h3>
+      <p id="intValue">--</p>
+    </div>
+    <div class="card">
+      <h3>Float Value</h3>
+      <p id="floatValue">--</p>
+    </div>
   </div>
-  <table id="readings">
-    <thead><tr><th>Time</th><th>Value</th></tr></thead>
-    <tbody></tbody>
-  </table>
 
-  <!-- Firebase SDKs (modular) -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
-
-  <script>
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDLch0pSaHR9xFQv_Uy8omfyZkg84fshIQ",
-  authDomain: "esp32-project-f6e02.firebaseapp.com",
-  databaseURL: "https://esp32-project-f6e02-default-rtdb.firebaseio.com",
-  projectId: "esp32-project-f6e02",
-  storageBucket: "esp32-project-f6e02.firebasestorage.app",
-  messagingSenderId: "925177881979",
-  appId: "1:925177881979:web:e9a555ec9d9af2cc1089de",
-  measurementId: "G-X12SYTY0DD"
-};
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    const startBtn = document.getElementById('start');
-    const tbody = document.querySelector('#readings tbody');
-
-    startBtn.addEventListener('click', () => {
-      const deviceId = document.getElementById('deviceId').value || 'device123';
-      const refPath = `/sensors/${deviceId}/readings`;
-      const readingsRef = db.ref(refPath);
-
-      // Listen for new children (push from ESP)
-      readingsRef.limitToLast(50).on('child_added', snapshot => {
-        const data = snapshot.val();
-        appendRow(data);
-      });
-
-      // Or listen for value to refresh entire list
-      readingsRef.limitToLast(50).on('value', snap => {
-        tbody.innerHTML = ''; // clear and re-add if you prefer full refresh
-        snap.forEach(child => appendRow(child.val()));
-      });
-
-      startBtn.disabled = true;
-    });
-
-    function appendRow(data) {
-      const tr = document.createElement('tr');
-      const time = data.ts ? new Date(data.ts).toLocaleString() : '—';
-      tr.innerHTML = `<td>${time}</td><td>${data.value}</td>`;
-      tbody.prepend(tr);
-      // keep table short
-      while (tbody.rows.length > 50) tbody.deleteRow(-1);
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
