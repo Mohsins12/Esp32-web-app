@@ -7,7 +7,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // We use double quotes encoded in URL as %22 — easier: include table name exactly with quotes.
 
 
-const TABLE = '%22Esp_data_log%22'; // equals "Esp_data_log"
+const TABLE = 'Esp_data_log'; // equals "Esp_data_log"
 
 async function fetchLatest() {
   try {
