@@ -1,34 +1,48 @@
-// Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyDLch0pSaHR9xFQv_Uy8omfyZkg84fshIQ",
-  authDomain: "esp32-project-f6e02.firebaseapp.com",
-  databaseURL: "https://esp32-project-f6e02-default-rtdb.firebaseio.com",
-  projectId: "esp32-project-f6e02",
-  storageBucket: "esp32-project-f6e02.firebasestorage.app",
-  messagingSenderId: "925177881979",
-  appId: "1:925177881979:web:e9a555ec9d9af2cc1089de",
-  measurementId: "G-X12SYTY0DD"
-};
+// --- Supabase configuration ---
+const SUPABASE_URL = "https://hvxyydtubqvbtmheluec.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eHl5ZHR1YnF2YnRtaGVsdWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5OTg2NzMsImV4cCI6MjA3NzU3NDY3M30.am66MDwDqnCKHDNPT8a-S_dUwuEoMzDrHgk802uWKDU";
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// References
-const touchRef = db.ref("/test/touchValue");
-const intRef = db.ref("/test/int");
-const floatRef = db.ref("/test/float");
+// --- Update HTML function ---
+async function loadData() {
+  const { data, error } = await supabase
+    .from("esp_data_log") // your table name
+    .select("*")
+    .order("id", { ascending: false })
+    .limit(1); // get latest row only
 
-// Update HTML when values change
-touchRef.on("value", (snapshot) => {
-  document.getElementById("touchValue").textContent = snapshot.val() ?? "--";
-});
+  if (error) {
+    console.error("Error fetching data:", error);
+    return;
+  }
 
-intRef.on("value", (snapshot) => {
-  document.getElementById("intValue").textContent = snapshot.val() ?? "--";
-});
+  if (data.length === 0) {
+    console.log("No data found.");
+    return;
+  }
 
-floatRef.on("value", (snapshot) => {
-  const val = snapshot.val();
-  document.getElementById("floatValue").textContent = val !== null ? val.toFixed(2) : "--";
-});
+  const latest = data[0];
+  console.log("Latest row:", latest);
+
+  // Update HTML values
+  document.getElementById("sensorValue").textContent =
+    latest.sensor_value?.toFixed(2) ?? "--";
+  document.getElementById("deflection").textContent =
+    latest.deflection ?? "--";
+
+  // Determine status based on deflection value
+  const statusElement = document.getElementById("status");
+  if (latest.deflection > 10) {
+    statusElement.textContent = "ON";
+    statusElement.style.color = "green";
+  } else {
+    statusElement.textContent = "OFF";
+    statusElement.style.color = "red";
+  }
+}
+
+// Refresh every 5 seconds
+setInterval(loadData, 5000);
+loadData();
