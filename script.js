@@ -33,7 +33,7 @@ async function fetchLatestData() {
       document.getElementById("deflection").textContent = deflection ?? "--";
 
       const statusEl = document.getElementById("status");
-      if (sensorValue < 30) {
+      if (sensor < 30) {
         statusEl.textContent = "⚠️ ON";
         statusEl.style.color = "red";
       } else {
