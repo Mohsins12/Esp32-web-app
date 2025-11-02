@@ -16,7 +16,7 @@ Authorization: `Bearer ${SUPABASE_KEY}`,
 }
 );
 
-```
+
 if (!response.ok) {
   const errorText = await response.text();
   console.error("Supabase REST error:", response.status, errorText);
@@ -45,7 +45,7 @@ if (data.length > 0) {
 } else {
   console.warn("No data found in table.");
 }
-```
+
 
 } catch (error) {
 console.error("Error fetching data:", error);
