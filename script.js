@@ -1,10 +1,11 @@
 // script.js — fetch latest row from Esp_data_log and update DOM
+console.log("Script loaded!");
 const SUPABASE_URL = "https://hvxyydtubqvbtmheluec.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eHl5ZHR1YnF2YnRtaGVsdWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5OTg2NzMsImV4cCI6MjA3NzU3NDY3M30.am66MDwDqnCKHDNPT8a-S_dUwuEoMzDrHgk802uWKDU";
 
 // If your table name has uppercase letters keep them quoted in the URL.
 // We use double quotes encoded in URL as %22 — easier: include table name exactly with quotes.
-console.log("Script loaded!");
+
 
 const TABLE = '%22Esp_data_log%22'; // equals "Esp_data_log"
 
