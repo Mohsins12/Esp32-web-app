@@ -4,6 +4,8 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // If your table name has uppercase letters keep them quoted in the URL.
 // We use double quotes encoded in URL as %22 — easier: include table name exactly with quotes.
+console.log("Script loaded!");
+
 const TABLE = '%22Esp_data_log%22'; // equals "Esp_data_log"
 
 async function fetchLatest() {
