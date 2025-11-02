@@ -1,7 +1,7 @@
 const SUPABASE_URL = "https://hvxyydtubqvbtmheluec.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eHl5ZHR1YnF2YnRtaGVsdWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5OTg2NzMsImV4cCI6MjA3NzU3NDY3M30.am66MDwDqnCKHDNPT8a-S_dUwuEoMzDrHgk802uWKDU";
 
-const tableName = "Esp_data_log";
+const tableName = "Esp_data_log"; // your exact table name
 
 async function fetchLatestData() {
   try {
@@ -29,16 +29,16 @@ async function fetchLatestData() {
       const sensor = data[0].sensor_value;
       const deflection = data[0].deflection;
 
-      document.getElementById("touchValue").textContent = sensor ?? "--";
-      document.getElementById("intValue").textContent = deflection ?? "--";
+      document.getElementById("sensorValue").textContent = sensor ?? "--";
+      document.getElementById("deflection").textContent = deflection ?? "--";
 
-      const statusElement = document.getElementById("floatValue");
+      const statusEl = document.getElementById("status");
       if (deflection > 50) {
-        statusElement.textContent = "⚠️ ON";
-        statusElement.style.color = "red";
+        statusEl.textContent = "⚠️ ON";
+        statusEl.style.color = "red";
       } else {
-        statusElement.textContent = "✅ OFF";
-        statusElement.style.color = "green";
+        statusEl.textContent = "✅ OFF";
+        statusEl.style.color = "green";
       }
     } else {
       console.warn("No data found in table.");
@@ -48,5 +48,6 @@ async function fetchLatestData() {
   }
 }
 
+// Fetch every 2 seconds
 setInterval(fetchLatestData, 2000);
 fetchLatestData();
