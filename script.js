@@ -4,7 +4,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // Load latest value from esp_data_log
 async function fetchLatestData() {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/esp_data_log?select=deflection,sensor_value&order=id.desc&limit=1`, {
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/Esp_data_log?select=deflection,sensor_value&order=id.desc&limit=1`, {
     headers: {
       "apikey": SUPABASE_ANON_KEY,
       "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
