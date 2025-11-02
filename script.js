@@ -1,35 +1,64 @@
-// ===== Supabase Configuration =====
+// script.js — fetch latest row from Esp_data_log and update DOM
 const SUPABASE_URL = "https://hvxyydtubqvbtmheluec.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eHl5ZHR1YnF2YnRtaGVsdWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5OTg2NzMsImV4cCI6MjA3NzU3NDY3M30.am66MDwDqnCKHDNPT8a-S_dUwuEoMzDrHgk802uWKDU";
 
-// Load latest value from esp_data_log
-async function fetchLatestData() {
-const response = await fetch(`${SUPABASE_URL}/rest/v1/"Esp_data_log"?select=deflection,sensor_value&order=id.desc&limit=1`, {
-  headers: {
-    "apikey": SUPABASE_ANON_KEY,
-    "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-  }
-});
+// If your table name has uppercase letters keep them quoted in the URL.
+// We use double quotes encoded in URL as %22 — easier: include table name exactly with quotes.
+const TABLE = '%22Esp_data_log%22'; // equals "Esp_data_log"
 
+async function fetchLatest() {
+  try {
+    const url = `${SUPABASE_URL}/rest/v1/${TABLE}?select=sensor_value,deflection&order=id.desc&limit=1`;
+    const res = await fetch(url, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
 
-  if (response.ok) {
-    const data = await response.json();
-    if (data.length > 0) {
-      const deflection = data[0].deflection;
-      const sensorValue = data[0].sensor_value;
-
-      document.getElementById("touchValue").textContent = sensorValue ?? "--";
-      document.getElementById("floatValue").textContent = deflection?.toFixed(2) ?? "--";
-
-      // Show ON/OFF state based on deflection threshold
-      document.getElementById("intValue").textContent =
-        deflection > 0.5 ? "ON" : "OFF";
+    if (!res.ok) {
+      const text = await res.text();
+      console.error('Supabase REST error:', res.status, text);
+      return;
     }
-  } else {
-    console.error("Error fetching:", await response.text());
+
+    const rows = await res.json();
+    if (!rows || rows.length === 0) {
+      // no data yet
+      document.getElementById('sensorValue').textContent = '--';
+      document.getElementById('deflection').textContent = '--';
+      document.getElementById('status').textContent = '--';
+      return;
+    }
+
+    const row = rows[0];
+    // handle missing fields gracefully
+    const sensor = (row.sensor_value !== null && row.sensor_value !== undefined) ? Number(row.sensor_value) : null;
+    const deflection = (row.deflection !== null && row.deflection !== undefined) ? Number(row.deflection) : null;
+
+    document.getElementById('sensorValue').textContent = (sensor !== null) ? sensor.toFixed(2) : '--';
+    document.getElementById('deflection').textContent = (deflection !== null) ? deflection.toFixed(3) : '--';
+
+    // ON/OFF logic — change threshold as you need
+    const threshold = 0.5;
+    const statusEl = document.getElementById('status');
+    if (deflection === null) {
+      statusEl.textContent = '--';
+      statusEl.style.color = '#333';
+    } else if (deflection > threshold) {
+      statusEl.textContent = 'ON';
+      statusEl.style.color = 'green';
+    } else {
+      statusEl.textContent = 'OFF';
+      statusEl.style.color = 'red';
+    }
+
+  } catch (err) {
+    console.error('Fetch error:', err);
   }
 }
 
-// Refresh data every 2 seconds
-setInterval(fetchLatestData, 2000);
-fetchLatestData();
+// refresh every 2s
+setInterval(fetchLatest, 2000);
+fetchLatest();
