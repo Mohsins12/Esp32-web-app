@@ -1,6 +1,6 @@
 const SUPABASE_URL = "https://hvxyydtubqvbtmheluec.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eHl5ZHR1YnF2YnRtaGVsdWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5OTg2NzMsImV4cCI6MjA3NzU3NDY3M30.am66MDwDqnCKHDNPT8a-S_dUwuEoMzDrHgk802uWKDU";
-const TABLE_NAME = "Esp Data"; // Use your exact table name
+const TABLE_NAME = "ESP_Data"; // Use your exact table name
 
 async function fetchLatestData() {
   try {
