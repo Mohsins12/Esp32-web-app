@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ESP32 Supabase Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Posture Monitoring Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>ESP32 Web Dashboard (Supabase)</h1>
+  <h1>ESP32 + MPU6050 Posture Monitoring</h1>
+
   <div class="data-container">
     <div class="card">
-      <h3>Sensor Value</h3>
-      <p id="sensorValue">--</p>
+      <h3>Angle Magnitude</h3>
+      <p id="angleMagnitude">--</p>
     </div>
     <div class="card">
-      <h3>Deflection</h3>
-      <p id="deflection">--</p>
+      <h3>Accel (X,Y,Z)</h3>
+      <p id="accel">--</p>
     </div>
     <div class="card">
-      <h3>Status</h3>
-      <p id="status">--</p>
+      <h3>Gyro (X,Y,Z)</h3>
+      <p id="gyro">--</p>
     </div>
   </div>
 
-  <!-- Load Supabase JS library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <h2 id="status">--</h2>
 
-  <!-- Your custom script -->
-<script src="script.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>

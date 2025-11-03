@@ -7,6 +7,7 @@ body {
 
 h1 {
   color: #333;
+  margin-bottom: 20px;
 }
 
 .data-container {
@@ -22,7 +23,12 @@ h1 {
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 200px;
+  width: 220px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .card h3 {
@@ -30,11 +36,13 @@ h1 {
 }
 
 .card p {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: bold;
   color: #2196f3;
 }
+
 #status {
   font-size: 2em;
   font-weight: bold;
+  margin-top: 30px;
 }
